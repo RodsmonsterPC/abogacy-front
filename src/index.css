@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base Styles ─────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-on-background font-sans antialiased overflow-x-hidden;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Noto Serif', Georgia, serif;
+  }
+
+  ::selection {
+    @apply bg-secondary-container text-on-secondary-container;
+  }
+}
+
+/* ─── Material Symbols ─────────────────────────────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ─── Component Utilities ─────────────────────────────────────────────────── */
+@layer components {
+  /* Cards */
+  .card {
+    @apply bg-surface-container-lowest border border-outline-variant rounded-lg shadow-level-1
+           hover:shadow-level-2 hover:-translate-y-0.5 transition-all duration-300;
+  }
+
+  .card-featured {
+    @apply card relative overflow-hidden;
+  }
+
+  .card-featured::before {
+    content: '';
+    @apply absolute left-0 top-0 bottom-0 w-1 bg-secondary;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-primary-container text-on-primary font-label-sm text-label-sm uppercase tracking-widest
+           px-6 py-3 rounded transition-all duration-300
+           hover:bg-black hover:border-b-2 hover:border-secondary-container
+           flex items-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-on-secondary-fixed-variant font-label-sm text-label-sm uppercase tracking-widest
+           px-6 py-3 rounded transition-colors duration-300
+           hover:bg-secondary-fixed flex items-center gap-2;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-primary border border-primary font-label-sm text-label-sm uppercase tracking-widest
+           px-6 py-3 rounded transition-all duration-300
+           hover:bg-surface-variant flex items-center gap-2;
+  }
+
+  /* Form inputs */
+  .input-field {
+    @apply w-full bg-[#F1F5F9] border-2 border-transparent rounded px-4 py-3
+           font-body-md text-body-md text-primary outline-none
+           focus:bg-white focus:border-secondary focus:shadow-[0_0_10px_rgba(115,92,0,0.1)]
+           transition-all duration-200 placeholder:text-outline-variant;
+  }
+
+  .input-label {
+    @apply block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2 tracking-wide;
+  }
+
+  /* Nav link */
+  .nav-link {
+    @apply font-serif text-sm tracking-wide uppercase text-white/70
+           hover:text-white transition-colors duration-300 relative pb-1;
+  }
+
+  .nav-link.active {
+    @apply text-white border-b-2 border-secondary-container;
+  }
+
+  /* Section container */
+  .container-max {
+    @apply max-w-container mx-auto px-margin;
+  }
+
+  /* Status chips */
+  .chip-pending {
+    @apply inline-block bg-secondary/10 text-secondary px-3 py-1 rounded font-label-sm text-label-sm uppercase;
+  }
+
+  .chip-resolved {
+    @apply inline-block bg-primary/10 text-primary px-3 py-1 rounded font-label-sm text-label-sm uppercase;
+  }
+
+  .chip-urgent {
+    @apply inline-block bg-error/10 text-error px-3 py-1 rounded font-label-sm text-label-sm uppercase;
+  }
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { @apply bg-surface-container-low; }
+::-webkit-scrollbar-thumb { @apply bg-outline-variant rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-outline; }
