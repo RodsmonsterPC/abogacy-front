@@ -1,25 +1,48 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../api/client'
 import { useLanguage } from '../context/LanguageContext'
+
+const CACHE_KEY = 'hl_services_cache'
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutos
+
+function readCache() {
+  try {
+    const raw = sessionStorage.getItem(CACHE_KEY)
+    if (!raw) return null
+    const { data, ts } = JSON.parse(raw)
+    if (Date.now() - ts < CACHE_TTL) return data
+    return null
+  } catch {
+    return null
+  }
+}
+
+function writeCache(data) {
+  try {
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() }))
+  } catch { /* cuota llena — ignorar */ }
+}
 
 export default function Services() {
   const { t } = useLanguage()
   const s = t('services')
 
-  const [services, setServices] = useState([])
-  const [loading, setLoading] = useState(true)
+  const cached = useRef(readCache())
+  const [services, setServices] = useState(cached.current || [])
+  const [loading, setLoading] = useState(!cached.current)
 
   useEffect(() => {
+    // Si hay caché, la UI ya está visible → sólo revalidamos en background (sin spinner)
     api.get('/services')
       .then(({ data }) => {
-        if (data.length > 0) {
-          setServices(data)
-        } else {
-          setServices(s.defaultServices)
-        }
+        const result = data.length > 0 ? data : s.defaultServices
+        setServices(result)
+        if (data.length > 0) writeCache(data) // sólo cachear datos reales de la BD
       })
-      .catch(() => setServices(s.defaultServices))
+      .catch(() => {
+        if (!cached.current) setServices(s.defaultServices)
+      })
       .finally(() => setLoading(false))
   }, [])
 
