@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
 import api from '../../api/client'
+import DashboardSidebar from '../../components/DashboardSidebar'
 
 const STATUS_OPTIONS = ['new', 'read', 'replied', 'archived']
 
 export default function MessagesManager() {
-  const { logout } = useAuth()
-  const navigate = useNavigate()
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('')
@@ -43,29 +40,7 @@ export default function MessagesManager() {
 
   return (
     <div className="bg-background min-h-screen">
-      <aside className="bg-white h-screen w-64 border-r border-slate-200 shadow-sm fixed left-0 top-0 flex flex-col py-6 z-50">
-        <div className="px-6 mb-8">
-          <h1 className="font-serif text-lg text-slate-900 font-semibold">Admin Console</h1>
-          <span className="font-label-sm text-label-sm text-slate-500 uppercase tracking-widest">Heritage Law</span>
-        </div>
-        <nav className="flex-1 flex flex-col text-xs uppercase tracking-widest font-bold">
-          {[
-            { to: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
-            { to: '/dashboard/articles', icon: 'edit_note', label: 'Articles' },
-            { to: '/dashboard/services', icon: 'gavel', label: 'Services' },
-            { to: '/dashboard/messages', icon: 'mail', label: 'Messages', active: true },
-          ].map(({ to, icon, label, active }) => (
-            <Link key={to} to={to} className={`flex items-center px-6 py-4 border-l-4 transition-all ${active ? 'bg-slate-100 text-slate-900 border-amber-500' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}>
-              <span className="material-symbols-outlined mr-4 text-xl">{icon}</span>{label}
-            </Link>
-          ))}
-        </nav>
-        <div className="mt-auto pt-6 border-t border-slate-200">
-          <button onClick={() => { logout(); navigate('/dashboard/login') }} className="w-full flex items-center px-6 py-4 text-slate-500 hover:bg-slate-50 text-xs uppercase tracking-widest font-bold">
-            <span className="material-symbols-outlined mr-4 text-xl">logout</span>Sign Out
-          </button>
-        </div>
-      </aside>
+      <DashboardSidebar />
 
       <main className="ml-64 p-margin min-h-screen">
         <header className="flex justify-between items-center mb-stack-lg border-b border-outline-variant pb-4">

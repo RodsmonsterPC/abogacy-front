@@ -1,61 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../api/client'
+import DashboardSidebar from '../../components/DashboardSidebar'
 
-const sideNav = [
-  { to: '/dashboard',           icon: 'dashboard',   label: 'Dashboard' },
-  { to: '/dashboard/articles',  icon: 'edit_note',   label: 'Articles' },
-  { to: '/dashboard/services',  icon: 'gavel',       label: 'Services' },
-  { to: '/dashboard/messages',  icon: 'mail',        label: 'Messages' },
-]
-
-function Sidebar({ onSignOut }) {
-  const { pathname } = useLocation()
-  return (
-    <aside className="bg-white h-screen w-64 border-r border-slate-200 shadow-sm fixed left-0 top-0 flex flex-col py-6 z-50">
-      <div className="px-6 mb-8">
-        <h1 className="font-serif text-lg text-slate-900 font-semibold leading-tight mb-1">Admin Console</h1>
-        <span className="font-label-sm text-label-sm text-slate-500 uppercase tracking-widest">Heritage Law</span>
-      </div>
-
-      <div className="px-6 mb-6">
-        <Link to="/dashboard/articles?new=1" className="w-full bg-primary text-on-primary hover:bg-tertiary border-b-2 border-transparent hover:border-secondary transition-all duration-200 py-3 rounded shadow-sm flex items-center justify-center gap-2 font-label-sm text-label-sm uppercase">
-          <span className="material-symbols-outlined text-lg">add</span>
-          New Article
-        </Link>
-      </div>
-
-      <nav className="flex-1 flex flex-col text-xs uppercase tracking-widest font-bold">
-        {sideNav.map(({ to, icon, label }) => (
-          <Link
-            key={to}
-            to={to}
-            className={`flex items-center px-6 py-4 border-l-4 transition-all duration-200 ${
-              pathname === to
-                ? 'bg-slate-100 text-slate-900 border-amber-500'
-                : 'border-transparent text-slate-500 hover:bg-slate-50'
-            }`}
-          >
-            <span className="material-symbols-outlined mr-4 text-xl">{icon}</span>
-            {label}
-          </Link>
-        ))}
-      </nav>
-
-      <div className="mt-auto pt-6 border-t border-slate-200">
-        <Link to="/" className="flex items-center px-6 py-4 text-slate-500 hover:bg-slate-50 transition-all duration-200 text-xs uppercase tracking-widest font-bold">
-          <span className="material-symbols-outlined mr-4 text-xl">public</span>
-          View Site
-        </Link>
-        <button onClick={onSignOut} className="w-full flex items-center px-6 py-4 text-slate-500 hover:bg-slate-50 transition-all text-xs uppercase tracking-widest font-bold">
-          <span className="material-symbols-outlined mr-4 text-xl">logout</span>
-          Sign Out
-        </button>
-      </div>
-    </aside>
-  )
-}
 
 export default function Dashboard() {
   const { logout } = useAuth()
@@ -85,7 +33,7 @@ export default function Dashboard() {
 
   return (
     <div className="bg-background min-h-screen">
-      <Sidebar onSignOut={handleSignOut} />
+      <DashboardSidebar />
       <main className="ml-64 p-margin min-h-screen">
         {/* Header */}
         <header className="flex justify-between items-end mb-stack-lg border-b border-outline-variant pb-4">
